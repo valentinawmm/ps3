@@ -16,6 +16,7 @@ import typing
 
 VOWELS = 'aeiou'
 CONSONANTS = 'bcdfghjklmnpqrstvwxyz'
+ALPHABET = VOWELS + CONSONANTS
 HAND_SIZE = 7
 
 SCRABBLE_LETTER_VALUES = {
@@ -212,45 +213,26 @@ def is_valid_word(word:str, hand:typing.Dict[str,int], word_list:list):
     """
     word = word.lower()
     for letter in word:
-        if letter not in VOWELS and letter not in CONSONANTS and letter != '*':
+        if letter not in ALPHABET and letter != '*':
             return False
         elif letter == '*':
             for i in VOWELS:
-                wordCopy = copy(word)
+                wordCopy = word
                 wordCopy = wordCopy.replace('*',i)
                 if wordCopy in word_list:
                     break
             else:
                 return False
-    #if * can replace a vowel and consist a legal word:True
-    #if * can is a consonant,that is illegal:False
 
-
-
-    # Option 1: count the number of letters in the word
     count_letter = {}
     for letter in word:
-        if letter not in count_letter:
-            count_letter[letter] = 1
-        else:
-            count_letter[letter] += 1
+        count_letter[letter] = count_letter.get(letter, 0) + 1
     for letter in word:
         if letter not in hand :
             return False
         if count_letter[letter] > hand[letter]:
             return False
     return True
-    
-    # option 2: minus one in hand, if reaches -1, returns False (make a copy of hand)
-    # hand_copy = hand.copy()
-    # for letter in word:
-    #     if letter not in hand_copy:
-    #         return False
-    #     if letter in hand_copy:
-    #         hand_copy[letter] -= 1
-    #         if hand_copy[letter] < 0:
-    #             return False
-    # return True
 
 
 #
